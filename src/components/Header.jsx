@@ -9,8 +9,14 @@ const Header = () => {
           10$
         </div>
       </div>
-      <div className="col-span-1"></div>
-      <div className="col-span-1"></div>
+      <div className="col-span-1 flex justify-center items-center text-3xl/tight">
+        Chronos Schima or sum shi idk
+      </div>
+      <div className="col-span-1 flex justify-end items-center ">
+        <div className="w-13 h-9.5 bg-text rounded-lg text-bg text-xl flex justify-center items-center">
+          2:45
+        </div>
+      </div>
     </div>
   );
 };
