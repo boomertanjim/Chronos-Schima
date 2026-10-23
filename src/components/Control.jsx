@@ -16,9 +16,15 @@ const Control = ({
   ]);
 
   const [recorded, setRecorded] = useState([false, false, false]);
+  const [showing, setShowing] = useState([10, 10, 10]);
 
-  const handleAnswer = (ans, index) => {
+  const handleAnswer = (ans, index, num) => {
     setAnswer((prev) => prev.map((val, i) => (i == index ? ans : val)));
+    setShowing((prev) =>
+      prev.map((val, i) =>
+        i == index ? (recorded[i] == false ? num : val) : val,
+      ),
+    );
     setRecorded((prev) => prev.map((val, i) => (i == index ? true : val)));
   };
 
@@ -83,11 +89,14 @@ const Control = ({
       <div className="col-span-1 justify-center flex flex-col gap-3">
         <p className="text-3xl">What is the Name of the Shape?</p>
         <div className="grid grid-cols-4 mx-8">
-          {choices[0].map((val) => (
+          {choices[0].map((val, i) => (
             <button
               className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer"
               onClick={() => {
-                recorded[0] === false && handleAnswer(val, 0);
+                recorded[0] === false && handleAnswer(val, 0, i);
+              }}
+              style={{
+                background: `${showing[0] == i ? (validated[0] == 1 ? "green" : "red") : "white"}`,
               }}
             >
               {val}
@@ -96,11 +105,14 @@ const Control = ({
         </div>
         <p className="text-3xl">What is the Color of the Shape?</p>
         <div className="grid grid-cols-4 mx-8">
-          {choices[1].map((val) => (
+          {choices[1].map((val, i) => (
             <button
               className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer"
               onClick={() => {
-                recorded[0] === false && handleAnswer(val, 0);
+                recorded[1] === false && handleAnswer(val, 1, i);
+              }}
+              style={{
+                background: `${showing[1] == i ? (validated[1] == 1 ? "green" : "red") : "white"}`,
               }}
             >
               {val}
@@ -109,11 +121,14 @@ const Control = ({
         </div>
         <p className="text-3xl">What is the Shape Saying?</p>
         <div className="grid grid-cols-4 mx-8">
-          {choices[0].map((val, i) => (
+          {choices[2].map((val, i) => (
             <button
               className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer"
               onClick={() => {
-                recorded[0] === false && handleAnswer(val, 0);
+                recorded[2] === false && handleAnswer(val, 2, i);
+              }}
+              style={{
+                background: `${showing[2] == i ? (validated[2] == 1 ? "green" : "red") : "white"}`,
               }}
             >
               {val}

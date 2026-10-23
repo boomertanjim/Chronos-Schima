@@ -66,7 +66,7 @@ function App() {
   const [expected] = useState(() => {
     const result = current.map((val) => val);
     const s = shapes[result[0]];
-    const c = result[1][0];
+    const c = Object.keys(colors)[result[1][1]];
     const t = result[2][0];
 
     return [s, c, t];
