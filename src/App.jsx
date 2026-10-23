@@ -3,24 +3,15 @@ import Canvas from "./components/Canvas";
 import Cards from "./components/Cards";
 import Control from "./components/Control";
 import Header from "./components/Header";
-import { useState, useEffect } from "react";
-
-const shapes = {
-  Circle: "./circle.svg",
-  Hexagon: "./hexagon.svg",
-  Pentagon: "./pentagon.svg",
-  Square: "./square.svg",
-  Star: "./star.svg",
-  Triangle: "./triangle.svg",
-};
+import { useState } from "react";
 
 const colors = {
-  Blue: "0000FF",
-  Green: "008000",
-  Red: "FF2C2C",
-  Cyan: "00FFFF",
-  Yellow: "FFFF00",
-  Purple: "9D00FF",
+  Blue: "#0000FF",
+  Green: "#008000",
+  Red: "#FF2C2C",
+  Cyan: "#00FFFF",
+  Yellow: "#FFFF00",
+  Purple: "#9D00FF",
 };
 
 const texts = [
@@ -46,15 +37,14 @@ const texts = [
   "Abe oy!",
 ];
 
-const data = [shapes, colors, texts];
+// const data = [shapes, colors, texts];
 
 function App() {
-  const [current, setCurrent] = useState([]);
   const selectRandom = () => {
     let random;
-    random = Math.floor(Math.random() * Object.keys(shapes).length);
+    random = Math.floor(Math.random() * 6);
     console.log("Random Selected 1: ", random);
-    let shape = [Object.values(shapes)[random], random];
+    let shape = random;
 
     random = Math.floor(Math.random() * Object.keys(colors).length);
     console.log("Random Selected 2: ", random);
@@ -64,24 +54,19 @@ function App() {
     console.log("Random Selected 3: ", random);
     let text = [Object.values(texts)[random], random];
 
-    setCurrent([shape, color, text]);
+    return [shape, color, text];
   };
-
-  useEffect(() => {
-    selectRandom();
-    console.log("Current Stuff: ", current);
-  }, []);
+  const [current] = useState(() => {
+    return selectRandom();
+  });
 
   return (
-    <div
-      className="w-screen h-screen grid grid-rows-11"
-      onClick={console.log(current)}
-    >
+    <div className="w-screen h-screen grid grid-rows-11">
       <Header />
       <div className="grid row-span-10 grid-cols-2">
         <Cards />
         <div className="w-full h-full col-span-1 grid grid-rows-2">
-          <Canvas />
+          <Canvas current={current} />
           <Control />
         </div>
       </div>
