@@ -15,7 +15,7 @@ const hexagon = () => {
       </mask>
       <path
         d="M590.196 0L1180.39 340.75V1022.25L590.196 1363L0 1022.25V340.75L590.196 0Z"
-        stroke-width="70"
+        strokeWidth="70"
         stroke="white"
         mask="url(#stroke0_2096_22)"
       />

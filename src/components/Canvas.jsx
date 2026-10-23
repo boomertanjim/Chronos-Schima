@@ -22,7 +22,7 @@ const Canvas = ({ current }) => {
           className="absolute w-40 top-6 left-57 anim"
         />
         <div className="w-33 h-14.5 absolute top-6 left-64 text-2xl rounded-2xl flex justify-center items-center anim">
-          <p>{current[2][1]}</p>
+          <p>{current[2][0]}</p>
         </div>
       </div>
     </div>
