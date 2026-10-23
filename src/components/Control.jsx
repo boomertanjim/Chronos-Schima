@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 
-const Control = ({ shapes, colors, texts, current }) => {
+const Control = ({
+  shapes,
+  colors,
+  texts,
+  current,
+  setAnswer,
+  answer,
+  validated,
+}) => {
   const [choices, setChoices] = useState([
     ["", "", "", ""],
     ["", "", "", ""],
@@ -9,8 +17,13 @@ const Control = ({ shapes, colors, texts, current }) => {
 
   const [recorded, setRecorded] = useState([false, false, false]);
 
+  const handleAnswer = (ans, index) => {
+    setAnswer((prev) => prev.map((val, i) => (i == index ? ans : val)));
+    setRecorded((prev) => prev.map((val, i) => (i == index ? true : val)));
+  };
+
   const selectChoice = () => {
-    let tempShapes = shapes;
+    let tempShapes = shapes.map((val) => val);
     let tempColors = Object.keys(colors);
     let tempTexts = texts;
     let tempChoices = [
@@ -70,48 +83,42 @@ const Control = ({ shapes, colors, texts, current }) => {
       <div className="col-span-1 justify-center flex flex-col gap-3">
         <p className="text-3xl">What is the Name of the Shape?</p>
         <div className="grid grid-cols-4 mx-8">
-          <button className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer" onClick={recorded[0] === false && }>
-            {choices[0][0]}
-          </button>
-          <button className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer">
-            {choices[0][1]}
-          </button>
-          <button className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer">
-            {choices[0][2]}
-          </button>
-          <button className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer">
-            {choices[0][3]}
-          </button>
+          {choices[0].map((val) => (
+            <button
+              className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer"
+              onClick={() => {
+                recorded[0] === false && handleAnswer(val, 0);
+              }}
+            >
+              {val}
+            </button>
+          ))}
         </div>
         <p className="text-3xl">What is the Color of the Shape?</p>
         <div className="grid grid-cols-4 mx-8">
-          <button className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer">
-            {choices[1][0]}
-          </button>
-          <button className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer">
-            {choices[1][1]}
-          </button>
-          <button className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer">
-            {choices[1][2]}
-          </button>
-          <button className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer">
-            {choices[1][3]}
-          </button>
+          {choices[1].map((val) => (
+            <button
+              className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer"
+              onClick={() => {
+                recorded[0] === false && handleAnswer(val, 0);
+              }}
+            >
+              {val}
+            </button>
+          ))}
         </div>
         <p className="text-3xl">What is the Shape Saying?</p>
         <div className="grid grid-cols-4 mx-8">
-          <button className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer">
-            {choices[2][0]}
-          </button>
-          <button className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer">
-            {choices[2][1]}
-          </button>
-          <button className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer">
-            {choices[2][2]}
-          </button>
-          <button className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer">
-            {choices[2][3]}
-          </button>
+          {choices[0].map((val, i) => (
+            <button
+              className="w-30 h-min py-0.5 border-2 border-text rounded-lg flex justify-center items-center text-xl btnType cursor-pointer"
+              onClick={() => {
+                recorded[0] === false && handleAnswer(val, 0);
+              }}
+            >
+              {val}
+            </button>
+          ))}
         </div>
       </div>
     </div>

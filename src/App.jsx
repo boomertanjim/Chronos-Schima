@@ -3,7 +3,7 @@ import Canvas from "./components/Canvas";
 import Cards from "./components/Cards";
 import Control from "./components/Control";
 import Header from "./components/Header";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const shapes = ["Circle", "Hexagon", "Pentagon", "Square", "Star", "Triangle"];
 
@@ -58,22 +58,39 @@ function App() {
 
     return [shape, color, text];
   };
-  const [score, setScore] = useState(0);
+  // const [score, setScore] = useState(0);
+  const [current] = useState(() => {
+    return selectRandom();
+  });
+  const [answer, setAnswer] = useState(["", "", ""]);
   const [expected] = useState(() => {
-    const result = selectRandom();
+    const result = current.map((val) => val);
     const s = shapes[result[0]];
     const c = result[1][0];
     const t = result[2][0];
 
     return [s, c, t];
   });
-  const [current] = useState(() => {
-    return selectRandom();
+
+  const validated = answer.map((val, i) => {
+    if (val === "") {
+      return 0;
+    } else if (val === expected[i]) {
+      return 1;
+    } else {
+      return 2;
+    }
   });
+
+  useEffect(() => {
+    console.log("Expected: ", expected);
+    console.log("Current Answer: ", answer);
+    console.log("Current Validation State: ", validated);
+  }, [answer, validated, expected]);
 
   return (
     <div className="w-screen h-screen grid grid-rows-11">
-      <Header score={score} />
+      <Header />
       <div className="grid row-span-10 grid-cols-2">
         <Cards />
         <div className="w-full h-full col-span-1 grid grid-rows-2">
@@ -83,6 +100,9 @@ function App() {
             colors={colors}
             texts={texts}
             current={current}
+            setAnswer={setAnswer}
+            answer={answer}
+            validated={validated}
           />
         </div>
       </div>
