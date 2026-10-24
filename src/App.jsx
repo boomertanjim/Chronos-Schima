@@ -54,6 +54,7 @@ function App() {
     return [shape, color, text];
   };
   const [score, setScore] = useState(0);
+  const [time, setTime] = useState(150);
   const [answer, setAnswer] = useState(["", "", ""]);
   const [done, setDone] = useState(false);
   const [restart, setRestart] = useState(false);
@@ -111,9 +112,23 @@ function App() {
     }
   }, [done]);
 
+  useEffect(() => {
+    if (time <= 0) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setTime((prev) => prev - 1);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [time]);
+
   return (
     <div className="w-screen h-screen grid grid-rows-11">
-      <Header score={score} />
+      <Header score={score} time={time} />
       <div className="grid row-span-10 grid-cols-2">
         <Cards />
         <div className="w-full h-full col-span-1 grid grid-rows-2">

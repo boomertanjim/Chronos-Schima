@@ -1,4 +1,4 @@
-const Header = ({ score }) => {
+const Header = ({ score, time }) => {
   return (
     <div className="row-span-1 w-full h-full grid grid-cols-3 px-4 py-1">
       <div className="flex items-center gap-2 col-span-1">
@@ -14,8 +14,10 @@ const Header = ({ score }) => {
         Chronos Schima or sum shi idk
       </div>
       <div className="col-span-1 flex justify-end items-center ">
-        <div className="w-13 h-9.5 bg-text rounded-lg text-bg text-xl flex justify-center items-center">
-          2:45
+        <div className="w-22 h-9.5 bg-text rounded-lg text-bg text-xl flex gap-1 justify-center items-center">
+          <p>{Math.floor(time / 60)}</p>
+          <p>:</p>
+          <p>{time % 60}</p>
         </div>
       </div>
     </div>
