@@ -6,15 +6,16 @@ const Control = ({
   texts,
   current,
   setAnswer,
-  answer,
   validated,
+  setDone,
+  setRestart,
+  restart,
 }) => {
   const [choices, setChoices] = useState([
     ["", "", "", ""],
     ["", "", "", ""],
     ["", "", "", ""],
   ]);
-
   const [recorded, setRecorded] = useState([false, false, false]);
   const [showing, setShowing] = useState([10, 10, 10]);
 
@@ -31,7 +32,7 @@ const Control = ({
   const selectChoice = () => {
     let tempShapes = shapes.map((val) => val);
     let tempColors = Object.keys(colors);
-    let tempTexts = texts;
+    let tempTexts = texts.map((val) => val);
     let tempChoices = [
       ["", "", "", ""],
       ["", "", "", ""],
@@ -47,12 +48,12 @@ const Control = ({
     random = Math.floor(Math.random() * 3);
     randoms.push(random);
     tempChoices[1][random] = Object.keys(colors)[current[1][1]];
-    tempColors.splice(current[1][0], 1);
+    tempColors.splice(current[1][1], 1);
 
     random = Math.floor(Math.random() * 3);
     randoms.push(random);
     tempChoices[2][random] = texts[current[2][1]];
-    tempTexts.splice(current[2][0], 1);
+    tempTexts.splice(current[2][1], 1);
 
     for (let i = 0; i <= 2; i++) {
       for (let j = 0; j <= 3; j++) {
@@ -76,13 +77,34 @@ const Control = ({
     }
 
     setChoices(tempChoices);
-    console.log(tempChoices);
   };
 
   useEffect(() => {
-    selectChoice();
-    console.log(choices);
+    async function ref() {
+      selectChoice();
+    }
+
+    ref();
   }, []);
+
+  useEffect(() => {
+    if (!recorded.includes(false)) {
+      setDone(true);
+    }
+  }, [recorded]);
+
+  useEffect(() => {
+    async function ref() {
+      console.log("Restarted ", restart);
+      selectChoice();
+      setRecorded([false, false, false]);
+      setShowing([10, 10, 10]);
+      setRestart(false);
+    }
+    if (restart) {
+      ref();
+    }
+  }, [restart]);
 
   return (
     <div className="col-span-1 w-full h-full">
@@ -98,6 +120,7 @@ const Control = ({
               style={{
                 background: `${showing[0] == i ? (validated[0] == 1 ? "green" : "red") : "white"}`,
               }}
+              key={i}
             >
               {val}
             </button>
@@ -114,6 +137,7 @@ const Control = ({
               style={{
                 background: `${showing[1] == i ? (validated[1] == 1 ? "green" : "red") : "white"}`,
               }}
+              key={i}
             >
               {val}
             </button>
@@ -130,6 +154,7 @@ const Control = ({
               style={{
                 background: `${showing[2] == i ? (validated[2] == 1 ? "green" : "red") : "white"}`,
               }}
+              key={i}
             >
               {val}
             </button>

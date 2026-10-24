@@ -3,7 +3,7 @@ import Canvas from "./components/Canvas";
 import Cards from "./components/Cards";
 import Control from "./components/Control";
 import Header from "./components/Header";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const shapes = ["Circle", "Hexagon", "Pentagon", "Square", "Star", "Triangle"];
 
@@ -45,25 +45,22 @@ function App() {
   const selectRandom = () => {
     let random;
     random = Math.floor(Math.random() * 5);
-    console.log("Random Selected 1: ", random);
     let shape = random;
 
     random = Math.floor(Math.random() * Object.keys(colors).length);
-    console.log("Random Selected 2: ", random);
     let color = [Object.values(colors)[random], random];
 
     random = Math.floor(Math.random() * Object.keys(texts).length);
-    console.log("Random Selected 3: ", random);
     let text = [Object.values(texts)[random], random];
 
     return [shape, color, text];
   };
   // const [score, setScore] = useState(0);
-  const [current] = useState(() => {
-    return selectRandom();
-  });
   const [answer, setAnswer] = useState(["", "", ""]);
-  const [expected] = useState(() => {
+  const [done, setDone] = useState(false);
+  const [restart, setRestart] = useState(false);
+  const [current, setCurrent] = useState(() => selectRandom());
+  const [expected, setExpected] = useState(() => {
     const result = current.map((val) => val);
     const s = shapes[result[0]];
     const c = Object.keys(colors)[result[1][1]];
@@ -88,6 +85,26 @@ function App() {
     console.log("Current Validation State: ", validated);
   }, [answer, validated, expected]);
 
+  useEffect(() => {
+    async function ref() {
+      setCurrent(selectRandom());
+      setAnswer(["", "", ""]);
+      setExpected(() => {
+        const result = current.map((val) => val);
+        const s = shapes[result[0]];
+        const c = Object.keys(colors)[result[1][1]];
+        const t = result[2][0];
+
+        return [s, c, t];
+      });
+      setDone(false);
+      setRestart(true);
+    }
+    if (done == true) {
+      ref();
+    }
+  }, [done]);
+
   return (
     <div className="w-screen h-screen grid grid-rows-11">
       <Header />
@@ -101,8 +118,10 @@ function App() {
             texts={texts}
             current={current}
             setAnswer={setAnswer}
-            answer={answer}
             validated={validated}
+            setDone={setDone}
+            setRestart={setRestart}
+            restart={restart}
           />
         </div>
       </div>
