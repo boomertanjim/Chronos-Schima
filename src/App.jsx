@@ -17,7 +17,7 @@ const colors = {
 };
 
 const texts = [
-  "GG!",
+  "Gng?",
   "Wow!",
   "Yo!",
   "Hello",
@@ -35,11 +35,9 @@ const texts = [
   "Fr gng?",
   "Nuh uh",
   "MRQTPNJ...",
-  "Oi kire!",
-  "Abe oy!",
+  "My bad",
+  "Mmmm!",
 ];
-
-// const data = [shapes, colors, texts];
 
 function App() {
   const selectRandom = () => {
@@ -98,16 +96,13 @@ function App() {
 
   useEffect(() => {
     async function ref() {
-      setCurrent(selectRandom());
+      const newCurrent = selectRandom();
+      setCurrent(newCurrent);
       setAnswer(["", "", ""]);
-      setExpected(() => {
-        const result = current.map((val) => val);
-        const s = shapes[result[0]];
-        const c = Object.keys(colors)[result[1][1]];
-        const t = result[2][0];
-
-        return [s, c, t];
-      });
+      const s = shapes[newCurrent[0]];
+      const c = Object.keys(colors)[newCurrent[1][1]];
+      const t = newCurrent[2][0];
+      setExpected([s, c, t]);
       setDone(false);
       setRestart(true);
     }
