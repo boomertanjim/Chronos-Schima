@@ -55,7 +55,7 @@ function App() {
 
     return [shape, color, text];
   };
-  // const [score, setScore] = useState(0);
+  const [score, setScore] = useState(0);
   const [answer, setAnswer] = useState(["", "", ""]);
   const [done, setDone] = useState(false);
   const [restart, setRestart] = useState(false);
@@ -78,6 +78,17 @@ function App() {
       return 2;
     }
   });
+
+  useEffect(() => {
+    const ref = async (j) => {
+      setScore((prev) => prev + j * 3);
+    };
+    if (done) {
+      const count = validated.filter((item) => item === 1).length;
+
+      ref(count);
+    }
+  }, [done]);
 
   useEffect(() => {
     console.log("Expected: ", expected);
@@ -107,7 +118,7 @@ function App() {
 
   return (
     <div className="w-screen h-screen grid grid-rows-11">
-      <Header />
+      <Header score={score} />
       <div className="grid row-span-10 grid-cols-2">
         <Cards />
         <div className="w-full h-full col-span-1 grid grid-rows-2">
