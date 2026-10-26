@@ -1,4 +1,12 @@
-const Header = ({ score, time, cash }) => {
+const Header = ({
+  score,
+  time,
+  cash,
+  animActive,
+  setAnimActive,
+  timeStatus,
+  timeColor,
+}) => {
   return (
     <div className="row-span-1 w-full h-full grid grid-cols-3 px-4 py-1">
       <div className="flex items-center gap-2 col-span-1">
@@ -14,13 +22,24 @@ const Header = ({ score, time, cash }) => {
         Chronos Schima or sum shi idk
       </div>
       <div className="col-span-1 flex justify-end items-center ">
-        <div className="w-22 h-9.5 bg-text rounded-lg text-bg text-xl flex gap-1 justify-center items-center">
-          <p>{Math.floor(time / 60)}</p>
+        <div className="relative w-22 h-9.5 bg-text rounded-lg text-bg text-xl flex gap-1 justify-center items-center">
+          <p
+            className={`text-[${timeColor}] z-[-1] absolute top-4 left-4 ${animActive && "popAnim"}`}
+            style={{ animationPlayState: !animActive ? "paused" : "running" }}
+            onAnimationEnd={() => {
+              setAnimActive(false);
+            }}
+          >
+            {`${timeStatus} secs`}
+          </p>
+          <p>{time > 0 ? Math.floor(time / 60) : "0"}</p>
           <p>:</p>
           <p>
-            {time % 60 < 10
-              ? (time % 60).toString().padStart(2, "0")
-              : time % 60}
+            {time > 0
+              ? time % 60 < 10
+                ? (time % 60).toString().padStart(2, "0")
+                : time % 60
+              : "00"}
           </p>
         </div>
       </div>

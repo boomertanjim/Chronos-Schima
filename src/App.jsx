@@ -3,7 +3,7 @@ import Canvas from "./components/Canvas";
 import Cards from "./components/Cards";
 import Control from "./components/Control";
 import Header from "./components/Header";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const shapes = ["Circle", "Hexagon", "Pentagon", "Square", "Star", "Triangle"];
 
@@ -53,12 +53,16 @@ function App() {
 
     return [shape, color, text];
   };
+  const chronos = 150;
   const [score, setScore] = useState(0);
-  const [time, setTime] = useState(150);
+  const [time, setTime] = useState(chronos);
   const [cash, setCash] = useState(0);
   const [answer, setAnswer] = useState(["", "", ""]);
   const [done, setDone] = useState(false);
   const [restart, setRestart] = useState(false);
+  const [animActive, setAnimActive] = useState(false);
+  const [timeStatus, setTimeStatus] = useState("");
+  const [timeColor, setTimeColor] = useState("green");
   const [current, setCurrent] = useState(() => selectRandom());
   const [expected, setExpected] = useState(() => {
     const result = current.map((val) => val);
@@ -69,32 +73,17 @@ function App() {
     return [s, c, t];
   });
 
-  const validated = answer.map((val, i) => {
-    if (val === "") {
-      return 0;
-    } else if (val === expected[i]) {
-      return 1;
-    } else {
-      return 2;
-    }
-  });
-
-  useEffect(() => {
-    const ref = async (j) => {
-      setScore((prev) => prev + j * 3);
-      if (j > 2) {
-        setTime((prev) => prev + 3);
-        setCash((prev) => prev + 5);
+  const validated = useMemo(() => {
+    return answer.map((val, i) => {
+      if (val === "") {
+        return 0;
+      } else if (val === expected[i]) {
+        return 1;
       } else {
-        setTime((prev) => prev - 5);
+        return 2;
       }
-    };
-    if (done) {
-      const count = validated.filter((item) => item === 1).length;
-
-      ref(count);
-    }
-  }, [done]);
+    });
+  }, [answer, expected]);
 
   useEffect(() => {
     console.log("Expected: ", expected);
@@ -103,25 +92,42 @@ function App() {
   }, [answer, validated, expected]);
 
   useEffect(() => {
-    async function ref() {
-      const newCurrent = selectRandom();
-      setCurrent(newCurrent);
-      setAnswer(["", "", ""]);
-      const s = shapes[newCurrent[0]];
-      const c = Object.keys(colors)[newCurrent[1][1]];
-      const t = newCurrent[2][0];
-      setExpected([s, c, t]);
-      setDone(false);
-      setRestart(true);
+    async function ref(j) {
+      if (!restart) {
+        const newCurrent = selectRandom();
+        setCurrent(newCurrent);
+        setAnswer(["", "", ""]);
+        const s = shapes[newCurrent[0]];
+        const c = Object.keys(colors)[newCurrent[1][1]];
+        const t = newCurrent[2][0];
+        setExpected([s, c, t]);
+        setScore((prev) => prev + j * 3);
+        if (j > 2) {
+          setTime((prev) => prev + 3);
+          setCash((prev) => prev + 5);
+          setTimeStatus("+3");
+          setTimeColor("green");
+        } else {
+          setTime((prev) => prev - 5);
+          setTimeStatus("-5");
+          setTimeColor("red");
+        }
+        setAnimActive(true);
+        setDone(false);
+      }
     }
     if (done == true) {
-      ref();
+      const count = validated.filter((item) => item === 1).length;
+      ref(count);
     }
-  }, [done]);
+  }, [done, restart]);
 
   useEffect(() => {
+    async function ref() {
+      setRestart(true);
+    }
     if (time <= 0) {
-      return;
+      ref();
     }
 
     const interval = setInterval(() => {
@@ -134,8 +140,39 @@ function App() {
   }, [time]);
 
   return (
-    <div className="w-screen h-screen grid grid-rows-11">
-      <Header score={score} time={time} cash={cash} />
+    <div className="absolute w-screen h-screen grid grid-rows-11">
+      <div
+        className="fixed top-0 left-0 w-screen h-screen bg-black/60 z-50 flex justify-center items-center"
+        style={{ display: restart ? "flex" : "none" }}
+      >
+        <div className="bg-bg border-2 py-15 border-text w-100 h-100 flex flex-col gap-3 justify-between items-center text-4xl rounded-xl">
+          <div className="flex flex-col mt-10 ml-3 justify-center items-center gap-5">
+            <p>You Scored:</p>
+            <p>{score}</p>
+          </div>
+          <button
+            className="w-40 h-10 border-2 rounded-2xl btnType flex justify-center items-centerS text-2xl"
+            onClick={() => {
+              setRestart(false);
+              setTime(chronos);
+              setScore(0);
+              setCash(0);
+              setDone(true);
+            }}
+          >
+            Play Again
+          </button>
+        </div>
+      </div>
+      <Header
+        score={score}
+        time={time}
+        cash={cash}
+        animActive={animActive}
+        setAnimActive={setAnimActive}
+        timeStatus={timeStatus}
+        timeColor={timeColor}
+      />
       <div className="grid row-span-10 grid-cols-2">
         <Cards />
         <div className="w-full h-full col-span-1 grid grid-rows-2">
@@ -148,8 +185,7 @@ function App() {
             setAnswer={setAnswer}
             validated={validated}
             setDone={setDone}
-            setRestart={setRestart}
-            restart={restart}
+            done={done}
           />
         </div>
       </div>

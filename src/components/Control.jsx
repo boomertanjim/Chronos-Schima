@@ -8,8 +8,6 @@ const Control = ({
   setAnswer,
   validated,
   setDone,
-  setRestart,
-  restart,
 }) => {
   const [choices, setChoices] = useState([
     ["", "", "", ""],
@@ -40,18 +38,23 @@ const Control = ({
     ];
     let randoms = [];
 
-    let random = Math.floor(Math.random() * 3);
+    let random = Math.floor(Math.random() * 4);
     randoms.push(random);
+    let temp = shapes[current[0]];
+    console.log("Current: ", current);
+    console.log("Testing: ", temp);
     tempChoices[0][random] = shapes[current[0]];
+    console.log("Current temp choices ", tempChoices);
     tempShapes.splice(current[0], 1);
 
-    random = Math.floor(Math.random() * 3);
+    random = Math.floor(Math.random() * 4);
     randoms.push(random);
     tempChoices[1][random] = Object.keys(colors)[current[1][1]];
     tempColors.splice(current[1][1], 1);
 
-    random = Math.floor(Math.random() * 3);
+    random = Math.floor(Math.random() * 4);
     randoms.push(random);
+    console.log("Randoms: ", randoms);
     tempChoices[2][random] = texts[current[2][1]];
     tempTexts.splice(current[2][1], 1);
 
@@ -91,20 +94,20 @@ const Control = ({
     if (!recorded.includes(false)) {
       setDone(true);
     }
-  }, [recorded]);
+  }, [recorded, setDone]);
+
+  useEffect(() => {
+    console.log("CURRENT CHANGED: ", current);
+  }, [current]);
 
   useEffect(() => {
     async function ref() {
-      console.log("Restarted ", restart);
       selectChoice();
       setRecorded([false, false, false]);
       setShowing([10, 10, 10]);
-      setRestart(false);
     }
-    if (restart) {
-      ref();
-    }
-  }, [restart]);
+    ref();
+  }, [current]);
 
   return (
     <div className="col-span-1 w-full h-full">

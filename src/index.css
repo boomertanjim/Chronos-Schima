@@ -62,3 +62,24 @@ body {
 .anim {
   animation: hover 1.5s ease-in-out infinite alternate;
 }
+
+.popAnim {
+  animation: pop 2s ease-in-out forwards;
+}
+
+@keyframes pop {
+  0% {
+    top: 16px;
+    z-index: -1;
+  }
+  50% {
+    top: 60px;
+  }
+  80% {
+    top: 60px;
+  }
+  100% {
+    color: transparent;
+    top: 60px;
+  }
+}
