@@ -42,7 +42,7 @@ const texts = [
 function App() {
   const selectRandom = () => {
     let random;
-    random = Math.floor(Math.random() * 5);
+    random = Math.floor(Math.random() * 6);
     let shape = random;
 
     random = Math.floor(Math.random() * Object.keys(colors).length);
@@ -73,6 +73,12 @@ function App() {
     return [s, c, t];
   });
 
+  const [powerSave, setPowerSave] = useState(false);
+  const [powerQuestion, setPowerQuestion] = useState(10);
+  const [powerQuestionRounds, setPowerQuestionRounds] = useState(
+    () => Math.floor(Math.random() * 5) + 1,
+  );
+
   const validated = useMemo(() => {
     return answer.map((val, i) => {
       if (val === "") {
@@ -86,9 +92,9 @@ function App() {
   }, [answer, expected]);
 
   useEffect(() => {
-    console.log("Expected: ", expected);
-    console.log("Current Answer: ", answer);
-    console.log("Current Validation State: ", validated);
+    // console.log("Expected: ", expected);
+    // console.log("Current Answer: ", answer);
+    // console.log("Current Validation State: ", validated);
   }, [answer, validated, expected]);
 
   useEffect(() => {
@@ -105,15 +111,32 @@ function App() {
         if (j > 2) {
           setTime((prev) => prev + 3);
           setCash((prev) => prev + 5);
-          setTimeStatus("+3");
+          setTimeStatus("+3 Secs");
           setTimeColor("green");
         } else {
-          setTime((prev) => prev - 5);
-          setTimeStatus("-5");
-          setTimeColor("red");
+          if (!powerSave) {
+            setTime((prev) => prev - 5);
+            setTimeStatus("-5 Secs");
+            setTimeColor("red");
+          } else {
+            setTimeStatus("Saved!");
+            setTimeColor("green");
+          }
         }
         setAnimActive(true);
+        if (j < 2) {
+          setPowerSave(false);
+        }
         setDone(false);
+        if (powerQuestion != 10) {
+          if (powerQuestionRounds > 1) {
+            setPowerQuestionRounds((prev) => prev - 1);
+          } else {
+            let random = Math.floor(Math.random() * 5) + 1;
+            setPowerQuestionRounds(random);
+            setPowerQuestion(10);
+          }
+        }
       }
     }
     if (done == true) {
@@ -158,6 +181,8 @@ function App() {
               setScore(0);
               setCash(0);
               setDone(true);
+              setTimeStatus("");
+              setTimeColor("transparent");
             }}
           >
             Play Again
@@ -174,7 +199,15 @@ function App() {
         timeColor={timeColor}
       />
       <div className="grid row-span-10 grid-cols-2">
-        <Cards />
+        <Cards
+          powerSave={powerSave}
+          setPowerSave={setPowerSave}
+          cash={cash}
+          setCash={setCash}
+          powerQuestion={powerQuestion}
+          setPowerQuestion={setPowerQuestion}
+          powerQuestionRounds={powerQuestionRounds}
+        />
         <div className="w-full h-full col-span-1 grid grid-rows-2">
           <Canvas current={current} />
           <Control
@@ -186,6 +219,8 @@ function App() {
             validated={validated}
             setDone={setDone}
             done={done}
+            powerQuestion={powerQuestion}
+            expected={expected}
           />
         </div>
       </div>

@@ -8,6 +8,9 @@ const Control = ({
   setAnswer,
   validated,
   setDone,
+  done,
+  expected,
+  powerQuestion,
 }) => {
   const [choices, setChoices] = useState([
     ["", "", "", ""],
@@ -108,6 +111,36 @@ const Control = ({
     }
     ref();
   }, [current]);
+
+  useEffect(() => {
+    async function ref() {
+      setAnswer((prev) =>
+        prev.map((val, i) =>
+          i == powerQuestion ? expected[powerQuestion] : val,
+        ),
+      );
+      setRecorded((prev) =>
+        prev.map((val, i) => (i == powerQuestion ? true : val)),
+      );
+
+      console.log("FDDJKdfsd1: ", powerQuestion);
+      let index = choices[powerQuestion].indexOf(expected[powerQuestion]);
+      console.log("DFJDSHFDSF1: ", expected[powerQuestion]);
+      console.log("DFJDSHFDSF CHOICES: ", choices);
+      console.log("DFJDSHFDSF2: ", index);
+      setShowing((prev) =>
+        prev.map((val, i) =>
+          i == powerQuestion ? (recorded[i] == false ? index : val) : val,
+        ),
+      );
+    }
+
+    if (powerQuestion < 0 || powerQuestion >= expected.length) {
+      return;
+    }
+
+    ref();
+  }, [powerQuestion, done]);
 
   return (
     <div className="col-span-1 w-full h-full">

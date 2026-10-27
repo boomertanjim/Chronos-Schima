@@ -30,7 +30,7 @@ const Header = ({
               setAnimActive(false);
             }}
           >
-            {`${timeStatus} secs`}
+            {timeStatus}
           </p>
           <p>{time > 0 ? Math.floor(time / 60) : "0"}</p>
           <p>:</p>
