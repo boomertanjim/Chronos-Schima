@@ -12,24 +12,7 @@ const Control = ({
   expected,
   powerQuestion,
 }) => {
-  const [choices, setChoices] = useState([
-    ["", "", "", ""],
-    ["", "", "", ""],
-    ["", "", "", ""],
-  ]);
-  const [recorded, setRecorded] = useState([false, false, false]);
-  const [showing, setShowing] = useState([10, 10, 10]);
-
-  const handleAnswer = (ans, index, num) => {
-    setAnswer((prev) => prev.map((val, i) => (i == index ? ans : val)));
-    setShowing((prev) =>
-      prev.map((val, i) =>
-        i == index ? (recorded[i] == false ? num : val) : val,
-      ),
-    );
-    setRecorded((prev) => prev.map((val, i) => (i == index ? true : val)));
-  };
-
+  //* Function to Select all Choices
   const selectChoice = () => {
     let tempShapes = shapes.map((val) => val);
     let tempColors = Object.keys(colors);
@@ -43,11 +26,7 @@ const Control = ({
 
     let random = Math.floor(Math.random() * 4);
     randoms.push(random);
-    let temp = shapes[current[0]];
-    console.log("Current: ", current);
-    console.log("Testing: ", temp);
     tempChoices[0][random] = shapes[current[0]];
-    console.log("Current temp choices ", tempChoices);
     tempShapes.splice(current[0], 1);
 
     random = Math.floor(Math.random() * 4);
@@ -57,7 +36,6 @@ const Control = ({
 
     random = Math.floor(Math.random() * 4);
     randoms.push(random);
-    console.log("Randoms: ", randoms);
     tempChoices[2][random] = texts[current[2][1]];
     tempTexts.splice(current[2][1], 1);
 
@@ -82,36 +60,44 @@ const Control = ({
       }
     }
 
-    setChoices(tempChoices);
+    return tempChoices;
   };
 
-  useEffect(() => {
-    async function ref() {
-      selectChoice();
-    }
+  //* States
+  const [choices, setChoices] = useState(() => {
+    return selectChoice();
+  });
+  const [recorded, setRecorded] = useState([false, false, false]);
+  const [showing, setShowing] = useState([10, 10, 10]);
 
-    ref();
-  }, []);
+  const handleAnswer = (ans, index, num) => {
+    setAnswer((prev) => prev.map((val, i) => (i == index ? ans : val)));
+    setShowing((prev) =>
+      prev.map((val, i) =>
+        i == index ? (recorded[i] == false ? num : val) : val,
+      ),
+    );
+    setRecorded((prev) => prev.map((val, i) => (i == index ? true : val)));
+  };
 
+  //* End a specific round
   useEffect(() => {
     if (!recorded.includes(false)) {
       setDone(true);
     }
   }, [recorded, setDone]);
 
-  useEffect(() => {
-    console.log("CURRENT CHANGED: ", current);
-  }, [current]);
-
+  //* Reset Everything after each round
   useEffect(() => {
     async function ref() {
-      selectChoice();
+      setChoices(selectChoice());
       setRecorded([false, false, false]);
       setShowing([10, 10, 10]);
     }
     ref();
   }, [current]);
 
+  //* First PowerUp Settings
   useEffect(() => {
     async function ref() {
       setAnswer((prev) =>
@@ -119,15 +105,12 @@ const Control = ({
           i == powerQuestion ? expected[powerQuestion] : val,
         ),
       );
-      setRecorded((prev) =>
-        prev.map((val, i) => (i == powerQuestion ? true : val)),
-      );
-
-      console.log("FDDJKdfsd1: ", powerQuestion);
+      if (done == false) {
+        setRecorded((prev) =>
+          prev.map((val, i) => (i == powerQuestion ? true : val)),
+        );
+      }
       let index = choices[powerQuestion].indexOf(expected[powerQuestion]);
-      console.log("DFJDSHFDSF1: ", expected[powerQuestion]);
-      console.log("DFJDSHFDSF CHOICES: ", choices);
-      console.log("DFJDSHFDSF2: ", index);
       setShowing((prev) =>
         prev.map((val, i) =>
           i == powerQuestion ? (recorded[i] == false ? index : val) : val,
@@ -140,7 +123,7 @@ const Control = ({
     }
 
     ref();
-  }, [powerQuestion, done]);
+  }, [powerQuestion, choices]);
 
   return (
     <div className="col-span-1 w-full h-full">
@@ -162,6 +145,7 @@ const Control = ({
             </button>
           ))}
         </div>
+
         <p className="text-3xl">What is the Color of the Shape?</p>
         <div className="grid grid-cols-4 mx-8">
           {choices[1].map((val, i) => (
@@ -179,6 +163,7 @@ const Control = ({
             </button>
           ))}
         </div>
+
         <p className="text-3xl">What is the Shape Saying?</p>
         <div className="grid grid-cols-4 mx-8">
           {choices[2].map((val, i) => (

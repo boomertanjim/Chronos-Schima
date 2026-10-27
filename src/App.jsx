@@ -6,7 +6,6 @@ import Header from "./components/Header";
 import { useEffect, useMemo, useState } from "react";
 
 const shapes = ["Circle", "Hexagon", "Pentagon", "Square", "Star", "Triangle"];
-
 const colors = {
   Blue: "#0000FF",
   Green: "#008000",
@@ -15,7 +14,6 @@ const colors = {
   Yellow: "#FFFF00",
   Purple: "#9D00FF",
 };
-
 const texts = [
   "Gng?",
   "Wow!",
@@ -41,28 +39,29 @@ const texts = [
 
 function App() {
   const selectRandom = () => {
-    let random;
-    random = Math.floor(Math.random() * 6);
+    let random = Math.floor(Math.random() * 6);
     let shape = random;
 
     random = Math.floor(Math.random() * Object.keys(colors).length);
     let color = [Object.values(colors)[random], random];
 
-    random = Math.floor(Math.random() * Object.keys(texts).length);
+    random = Math.floor(Math.random() * texts.length);
     let text = [Object.values(texts)[random], random];
 
     return [shape, color, text];
   };
+
+  //* Header States
   const chronos = 150;
-  const [score, setScore] = useState(0);
   const [time, setTime] = useState(chronos);
+  const [score, setScore] = useState(0);
   const [cash, setCash] = useState(0);
-  const [answer, setAnswer] = useState(["", "", ""]);
-  const [done, setDone] = useState(false);
-  const [restart, setRestart] = useState(false);
   const [animActive, setAnimActive] = useState(false);
   const [timeStatus, setTimeStatus] = useState("");
   const [timeColor, setTimeColor] = useState("green");
+
+  //* Question States
+  const [answer, setAnswer] = useState(["", "", ""]);
   const [current, setCurrent] = useState(() => selectRandom());
   const [expected, setExpected] = useState(() => {
     const result = current.map((val) => val);
@@ -72,13 +71,6 @@ function App() {
 
     return [s, c, t];
   });
-
-  const [powerSave, setPowerSave] = useState(false);
-  const [powerQuestion, setPowerQuestion] = useState(10);
-  const [powerQuestionRounds, setPowerQuestionRounds] = useState(
-    () => Math.floor(Math.random() * 5) + 1,
-  );
-
   const validated = useMemo(() => {
     return answer.map((val, i) => {
       if (val === "") {
@@ -91,12 +83,18 @@ function App() {
     });
   }, [answer, expected]);
 
-  useEffect(() => {
-    // console.log("Expected: ", expected);
-    // console.log("Current Answer: ", answer);
-    // console.log("Current Validation State: ", validated);
-  }, [answer, validated, expected]);
+  //* Round and Restart States
+  const [done, setDone] = useState(false);
+  const [restart, setRestart] = useState(false);
 
+  //* Power Up States
+  const [powerSave, setPowerSave] = useState(false);
+  const [powerQuestion, setPowerQuestion] = useState(10);
+  const [powerQuestionRounds, setPowerQuestionRounds] = useState(
+    () => Math.floor(Math.random() * 5) + 1,
+  );
+
+  //* Reset Function after every Round
   useEffect(() => {
     async function ref(j) {
       if (!restart) {
@@ -127,7 +125,6 @@ function App() {
         if (j < 2) {
           setPowerSave(false);
         }
-        setDone(false);
         if (powerQuestion != 10) {
           if (powerQuestionRounds > 1) {
             setPowerQuestionRounds((prev) => prev - 1);
@@ -137,6 +134,7 @@ function App() {
             setPowerQuestion(10);
           }
         }
+        setDone(false);
       }
     }
     if (done == true) {
@@ -145,6 +143,7 @@ function App() {
     }
   }, [done, restart]);
 
+  //* Timer Function
   useEffect(() => {
     async function ref() {
       setRestart(true);

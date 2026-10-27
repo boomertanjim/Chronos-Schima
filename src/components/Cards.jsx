@@ -7,7 +7,7 @@ const Cards = ({
   powerQuestion,
   powerQuestionRounds,
 }) => {
-  // const questionRequired = 20;
+  const questionRequired = 20;
   // const gambleRequired = 6;
   const saveRequired = 10;
   return (
@@ -25,8 +25,11 @@ const Cards = ({
           <button
             className="w-30 h-8 mt-6 bg-bg border-2 rounded-xl border-text text-center text-xl/tight cursor-pointer"
             onClick={() => {
-              let random = Math.floor(Math.random() * 3);
-              setPowerQuestion(random);
+              if (cash >= questionRequired) {
+                let random = Math.floor(Math.random() * 3);
+                setPowerQuestion(random);
+                setCash((prev) => prev - questionRequired);
+              }
             }}
           >
             {powerQuestion != 10 ? "In Use" : "BUY"}
