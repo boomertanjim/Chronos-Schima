@@ -2,6 +2,7 @@ import "./App.css";
 import Canvas from "./components/Canvas";
 import Cards from "./components/Cards";
 import Control from "./components/Control";
+import Gamble from "./components/Gamble";
 import Header from "./components/Header";
 import { useEffect, useMemo, useState } from "react";
 
@@ -93,6 +94,7 @@ function App() {
   const [powerQuestionRounds, setPowerQuestionRounds] = useState(
     () => Math.floor(Math.random() * 5) + 1,
   );
+  const [gambleToggle, setGambleToggle] = useState(false);
 
   //* Reset Function after every Round
   useEffect(() => {
@@ -122,7 +124,7 @@ function App() {
           }
         }
         setAnimActive(true);
-        if (j < 2) {
+        if (j < 3) {
           setPowerSave(false);
         }
         if (powerQuestion != 10) {
@@ -153,13 +155,15 @@ function App() {
     }
 
     const interval = setInterval(() => {
-      setTime((prev) => prev - 1);
+      if (!gambleToggle) {
+        setTime((prev) => prev - 1);
+      }
     }, 1000);
 
     return () => {
       clearInterval(interval);
     };
-  }, [time]);
+  }, [time, gambleToggle]);
 
   return (
     <div className="absolute w-screen h-screen grid grid-rows-11">
@@ -188,6 +192,12 @@ function App() {
           </button>
         </div>
       </div>
+      <Gamble
+        gambleToggle={gambleToggle}
+        setGambleToggle={setGambleToggle}
+        setCash={setCash}
+        setTime={setTime}
+      />
       <Header
         score={score}
         time={time}
@@ -206,6 +216,8 @@ function App() {
           powerQuestion={powerQuestion}
           setPowerQuestion={setPowerQuestion}
           powerQuestionRounds={powerQuestionRounds}
+          setGambleToggle={setGambleToggle}
+          gambleToggle={gambleToggle}
         />
         <div className="w-full h-full col-span-1 grid grid-rows-2">
           <Canvas current={current} />

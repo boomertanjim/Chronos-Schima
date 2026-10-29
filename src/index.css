@@ -83,3 +83,17 @@ body {
     top: 60px;
   }
 }
+
+.gamble {
+  animation: gamble 0.2s ease-in-out forwards;
+}
+
+@keyframes gamble {
+  0% {
+    height: 100%;
+  }
+  100% {
+    height: 0px;
+    color: transparent;
+  }
+}

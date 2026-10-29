@@ -6,9 +6,11 @@ const Cards = ({
   setPowerQuestion,
   powerQuestion,
   powerQuestionRounds,
+  gambleToggle,
+  setGambleToggle,
 }) => {
   const questionRequired = 20;
-  // const gambleRequired = 6;
+  const gambleRequired = 6;
   const saveRequired = 10;
   return (
     <div className="col-span-1 h-full w-full flex justify-center items-center gap-4">
@@ -40,8 +42,16 @@ const Cards = ({
         <div className="w-40 h-60 border-3 border-text rounded-xl cards flex flex-col justify-center items-center">
           <img src="./gamble.svg" alt="" className="w-20 h-20 mb-4" />
           <p className="text-2xl font-bold text-center">Gamble</p>
-          <button className="w-30 h-8 mt-10 bg-bg border-2 rounded-xl border-text text-center text-xl/tight cursor-pointer">
-            BUY
+          <button
+            className="w-30 h-8 mt-10 bg-bg border-2 rounded-xl border-text text-center text-xl/tight cursor-pointer"
+            onClick={() => {
+              if (cash >= gambleRequired) {
+                setGambleToggle(true);
+                setCash((prev) => prev - gambleRequired);
+              }
+            }}
+          >
+            {gambleToggle ? "In Use" : "BUY"}
           </button>
         </div>
       </div>
