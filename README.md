@@ -1,16 +1,48 @@
-# React + Vite
+# Chronos Schima
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Chronos Schima is a simple web-game where the player needs to identify different shapes, colors and texts. (They can also gamble and lose everything.)
 
-Currently, two official plugins are available:
+## Description
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Chronos Schima is a small game where the player needs to identify different shapes within a set time of 2 minutes and 30 seconds. In each round, a random shape, color and dialogue text is generated and rendered in the webpage. Three multiple choice questions are asked and the player needs to correctly answer all of them.
 
-## React Compiler
+The Questions are:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. What is the name of the shape?
+2. What is the color of the shape?
+3. What is the shape saying?
 
-## Expanding the ESLint configuration
+Each correct answer adds 3 points to the score. If all the answer is correct, 5 dollars and 3 extra seconds are awarded to the player. If any of the answer is wrong, 3 seconds are deducted from the timer. The goal of the game is to gain the most score possible.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+To make the game more fun, I've added 3 power ups which the player can use to get different useful effects.
+
+The power ups are:
+
+### - Safety for One Round:
+
+If this powerup is in use and the player makes any mistake in answering the questions, 3 seconds will not be deducted.
+
+### - Gmabling:
+
+The player is given a total 10 cards and he needs to choose any two from them. If he get's lucky he can win rewards. The rewards can be extra cash or extra time.
+
+### - Reduce One Question:
+
+For a random amount of rounds, one of the three question will be answered automatically.
+
+### Screenshots
+
+## Build with
+
+- HTML5
+- ReactJS
+- Javascript
+- TailwindCSS
+- NodeJS
+
+## Help
+
+1. The webpage looks weird
+   - Zoom in or zoom out and see if the page looks ok or not. It is my first webpage which I tried to make responsive. It it's bad I'm sorry!
+
+## License
