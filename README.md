@@ -18,19 +18,21 @@ To make the game more fun, I've added 3 power ups which the player can use to ge
 
 The power ups are:
 
-### - Safety for One Round:
+#### Safety for One Round:
 
 If this powerup is in use and the player makes any mistake in answering the questions, 3 seconds will not be deducted.
 
-### - Gmabling:
+#### Gambling:
 
 The player is given a total 10 cards and he needs to choose any two from them. If he get's lucky he can win rewards. The rewards can be extra cash or extra time.
 
-### - Reduce One Question:
+#### Reduce One Question:
 
 For a random amount of rounds, one of the three question will be answered automatically.
 
 ### Screenshots
+
+<img width="1920" height="871" alt="image" src="https://github.com/user-attachments/assets/49c0d485-afa0-41ce-925a-3e3ed6837846" />
 
 ## Build with
 
