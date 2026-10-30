@@ -48,3 +48,4 @@ For a random amount of rounds, one of the three question will be answered automa
    - Zoom in or zoom out and see if the page looks ok or not. It is my first webpage which I tried to make responsive. It it's bad I'm sorry!
 
 ## License
+This project is licensed under the MIT License. See the LICENSE file for details.
