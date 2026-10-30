@@ -25,7 +25,7 @@ const Header = ({
       <div className="col-span-1 flex justify-end items-center ">
         <div className="relative w-min h-6 px-3 lg:py-4 bg-text rounded-lg text-xl lg:text-xl flex gap-1 justify-center items-center">
           <p
-            className={`z-[-1] absolute top-2 left-4 ${animActive && "popAnim"}`}
+            className={`z-[-1] whitespace-nowrap absolute top-2 left-0 ${animActive && "popAnim"}`}
             style={{
               color: timeColor,
               animationPlayState: !animActive ? "paused" : "running",
