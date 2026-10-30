@@ -17,8 +17,8 @@ const Gamble = ({ setGambleToggle, gambleToggle, setTime, setCash }) => {
 
   useEffect(() => {
     const ref = () => {
-      const moneyArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2];
-      const timeArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1];
+      const moneyArray = [0, 1, 1, 1, 1, 1, 2];
+      const timeArray = [0, 0, 0, 0, 0, 0, 0, 1, 1, 1];
       const moneyRandom =
         moneyArray[Math.floor(Math.random() * moneyArray.length)];
       const timeRandom =
@@ -76,13 +76,15 @@ const Gamble = ({ setGambleToggle, gambleToggle, setTime, setCash }) => {
       className="fixed top-0 left-0 w-screen h-screen bg-black/60 z-50 flex justify-center items-center"
       style={{ display: gambleToggle ? "flex" : "none" }}
     >
-      <div className="bg-bg border-2 py-12 px-15 border-text w-250 h-150 text-4xl rounded-xl grid grid-rows-10">
-        <div className="text-center row-span-1"> Choose Any Two</div>
-        <div className="row-span-9 grid grid-rows-2 grid-cols-5 gap-x-7 gap-y-4">
+      <div className="bg-bg border-2 py-8 px-10 border-text w-120 h-80 lg:w-200 lg:h-120 rounded-xl grid grid-rows-10">
+        <div className="text-center text-2xl lg:text-3xl row-span-1">
+          Choose Any Two
+        </div>
+        <div className="row-span-9 grid grid-rows-2 grid-cols-5 gap-x-2 gap-y-2 lg:gap-x-5 lg:gap-y-3">
           {gamble.map((val, i) => (
             <div className="relative h-full w-full border-3 border-text rounded-xl cards flex flex-col justify-center items-center p-3">
               <div
-                className={`absolute bg-[#faf4dc] w-full h-full rounded-xl text-7xl flex justify-center items-center ${gamble[i][2] && "gamble"}`}
+                className={`absolute bg-[#faf4dc] w-full h-full rounded-xl text-5xl flex justify-center items-center ${gamble[i][2] && "gamble"}`}
                 style={{
                   animationPlayState: !gamble[i][2] ? "paused" : "running",
                 }}
@@ -105,7 +107,7 @@ const Gamble = ({ setGambleToggle, gambleToggle, setTime, setCash }) => {
                 ?
               </div>
               <div
-                className={`w-full h-full flex justify-center items-center text-center ${gamble[i][1] == 0 ? "text-red-400" : "text-green-400"}`}
+                className={`w-full h-full flex justify-center items-center text-lg lg:text-2xl text-center ${gamble[i][1] == 0 ? "text-red-400" : "text-green-400"}`}
               >
                 {val[0]}
               </div>

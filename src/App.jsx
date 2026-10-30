@@ -33,7 +33,7 @@ const texts = [
   "<3",
   "Fr gng?",
   "Nuh uh",
-  "MRQTPNJ...",
+  "Chronos",
   "My bad",
   "Mmmm!",
 ];
@@ -91,9 +91,10 @@ function App() {
   //* Power Up States
   const [powerSave, setPowerSave] = useState(false);
   const [powerQuestion, setPowerQuestion] = useState(10);
-  const [powerQuestionRounds, setPowerQuestionRounds] = useState(
-    () => Math.floor(Math.random() * 5) + 1,
-  );
+  const [powerQuestionRounds, setPowerQuestionRounds] = useState(() => {
+    const rounds = [3, 3, 3, 4, 4, 5];
+    return rounds[Math.floor(Math.random() * rounds.length)];
+  });
   const [gambleToggle, setGambleToggle] = useState(false);
 
   //* Reset Function after every Round
@@ -131,7 +132,8 @@ function App() {
           if (powerQuestionRounds > 1) {
             setPowerQuestionRounds((prev) => prev - 1);
           } else {
-            let random = Math.floor(Math.random() * 5) + 1;
+            const rounds = [3, 3, 3, 4, 4, 5];
+            let random = rounds[Math.floor(Math.random() * rounds.length)];
             setPowerQuestionRounds(random);
             setPowerQuestion(10);
           }
@@ -166,18 +168,18 @@ function App() {
   }, [time, gambleToggle]);
 
   return (
-    <div className="absolute w-screen h-screen grid grid-rows-11">
+    <div className="absolute w-screen h-screen grid grid-rows-9">
       <div
         className="fixed top-0 left-0 w-screen h-screen bg-black/60 z-50 flex justify-center items-center"
         style={{ display: restart ? "flex" : "none" }}
       >
-        <div className="bg-bg border-2 py-15 border-text w-100 h-100 flex flex-col gap-3 justify-between items-center text-4xl rounded-xl">
-          <div className="flex flex-col mt-10 ml-3 justify-center items-center gap-5">
+        <div className="bg-bg border-2 py-10 lg:py-13 border-text w-80 h-80 lg:w-80 lg:h-100 flex flex-col gap-3 justify-between items-center text-4xl rounded-xl">
+          <div className="flex flex-col mt-5 lg:mt-8 ml-3 justify-center items-center gap-5">
             <p>You Scored:</p>
             <p>{score}</p>
           </div>
           <button
-            className="w-40 h-10 border-2 rounded-2xl btnType flex justify-center items-centerS text-2xl"
+            className="w-30 h-10 border-2 rounded-2xl btnType flex justify-center items-center text-xl"
             onClick={() => {
               setRestart(false);
               setTime(chronos);
@@ -207,7 +209,7 @@ function App() {
         timeStatus={timeStatus}
         timeColor={timeColor}
       />
-      <div className="grid row-span-10 grid-cols-2">
+      <div className="grid row-span-8 grid-cols-2">
         <Cards
           powerSave={powerSave}
           setPowerSave={setPowerSave}

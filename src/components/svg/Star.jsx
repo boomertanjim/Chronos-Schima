@@ -1,7 +1,7 @@
 const star = () => {
   return (
     <svg
-      width="200"
+      className="w-20 lg:w-33"
       viewBox="0 0 1144 1089"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"

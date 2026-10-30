@@ -1,7 +1,7 @@
 const square = () => {
   return (
     <svg
-      width="180"
+      className="w-20 lg:w-33"
       viewBox="0 0 1075 1075"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
